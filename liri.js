@@ -23,17 +23,17 @@ function liriTwitter(){
 	});
 }
 
-function liriSpotify(){
+function liriSpotify(arr){
 	var spotify = require('spotify');
 
 	var songName = "";
 	var itemIndex = 0;
-	if(process.argv.length > 3){
-		for(var i=3;i<process.argv.length;i++){
-			if(i==process.argv.length)
-				songName = songName + process.argv[i];
+	if(arr.length > 3){
+		for(var i=3;i<arr.length;i++){
+			if(i==arr.length)
+				songName = songName + arr[i];
 			else
-				songName = songName + process.argv[i] + " ";
+				songName = songName + arr[i] + " ";
 		}
 	}
 	else{
@@ -66,17 +66,17 @@ function liriSpotify(){
 	});
 }
 
-function liriOmdb(){
+function liriOmdb(arr){
 	var request = require('request');
 
 	var movieName = "";
 
-	if(process.argv.length>3){
-		for (var i=3; i<process.argv.length; i++){
+	if(arr.length>3){
+		for (var i=3; i<arr.length; i++){
 			if (i>3)
-				movieName = movieName + "+" + process.argv[i];
+				movieName = movieName + "+" + arr[i];
 			else
-				movieName = movieName + process.argv[i];
+				movieName = movieName + arr[i];
 		}
 	}
 	else{
@@ -93,7 +93,7 @@ function liriOmdb(){
 			console.log("Plot: " + JSON.parse(body)["Plot"]);
 			console.log("Actors: " + JSON.parse(body)["Actors"]);
 			console.log("Rotton Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]);
-			console.log("Rotton Tomatoes Rating: " + JSON.parse(body)["tomatoURL"]);
+			console.log("Rotton Tomatoes Url: " + JSON.parse(body)["tomatoURL"]);
 		}
 	});
 }
@@ -102,15 +102,25 @@ if(process.argv[2]=="my-tweets"){
 	liriTwitter();
 }
 else if(process.argv[2]=="spotify-this-song"){
-	liriSpotify();
+	liriSpotify(process.argv);
 }
 else if (process.argv[2]=="movie-this"){
-	liriOmdb();
+	liriOmdb(process.argv);
 }
 else if(process.argv[2]=="do-what-it-says"){
 	require('fs').readFile("random.txt", "utf8", function(error, data) {
 		var dataArr = data.split(',');
-		// if(dataArr[0]=="my-tweets")
-			// liriTwitter();
+		if(dataArr[0]=="my-tweets")
+			liriTwitter();
+		else if(dataArr[0]=="spotify-this-song"){
+			dataArr.unshift("");
+			dataArr.unshift("");
+			liriSpotify(dataArr);
+		}
+		else if(dataArr[0]=="movie-this"){
+			dataArr.unshift("");
+			dataArr.unshift("");
+			liriOmdb(dataArr);
+		}
 	});
 }
