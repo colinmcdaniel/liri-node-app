@@ -1,3 +1,116 @@
-var keysjs = require("./keys.js");
+function liriTwitter(){
+	var keysjs = require("./keys.js");
+	var Twitter = require('twitter');
 
-var twitterKeys = keysjs.twitterKeys;
+	var client = new Twitter({
+	  consumer_key: keysjs.twitterKeys.consumer_key,
+	  consumer_secret: keysjs.twitterKeys.consumer_secret,
+	  access_token_key: keysjs.twitterKeys.access_token_key,
+	  access_token_secret: keysjs.twitterKeys.access_token_secret,
+	});
+
+	var params = {count: 20};
+	client.get('statuses/user_timeline', params, function(error, tweets, response) {
+	  	if (!error){
+	  		for(var i=0;i<20;i++){
+	    		console.log(tweets[i].text);
+	    		console.log(tweets[i].created_at);
+	    		console.log("");
+	    	}
+		}
+	  	else
+	  		console.log("There was an error getting tweets.");
+	});
+}
+
+function liriSpotify(){
+	var spotify = require('spotify');
+
+	var songName = "";
+	var itemIndex = 0;
+	if(process.argv.length > 3){
+		for(var i=3;i<process.argv.length;i++){
+			if(i==process.argv.length)
+				songName = songName + process.argv[i];
+			else
+				songName = songName + process.argv[i] + " ";
+		}
+	}
+	else{
+		songName = "The Sign";
+		itemIndex = 8;
+	}
+ 
+	spotify.search({ type: 'track', query: songName }, function(err, data) {
+	    if ( err ) {
+	        console.log('Error: '+err);
+	        return;
+	    }
+
+	    console.log("Artist(s):");
+	    for(var i=0;i<data.tracks.items[itemIndex].artists.length;i++)
+	    	console.log(data.tracks.items[itemIndex].artists[i].name);
+	    console.log("");
+
+	    console.log("Song name:")
+	    console.log(data.tracks.items[itemIndex].name);
+	    console.log("");
+
+	    console.log("Preview link:");
+	    console.log(data.tracks.items[itemIndex].preview_url);
+	    console.log("");
+
+	    console.log("Album:");
+	    console.log(data.tracks.items[itemIndex].album.name);
+	    console.log("");
+	});
+}
+
+function liriOmdb(){
+	var request = require('request');
+
+	var movieName = "";
+
+	if(process.argv.length>3){
+		for (var i=3; i<process.argv.length; i++){
+			if (i>3)
+				movieName = movieName + "+" + process.argv[i];
+			else
+				movieName = movieName + process.argv[i];
+		}
+	}
+	else{
+		movieName = "Mr. Nobody"
+	}
+
+	request('https://www.omdbapi.com/?t=' + movieName +'&y=&plot=short&tomatoes&r=json&tomatoes=true', function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			console.log("Title: " + JSON.parse(body)["Title"]);
+			console.log("Release Year: " + JSON.parse(body)["Year"]);
+			console.log("Rated: " + JSON.parse(body)["Rated"]);
+			console.log("Country: " + JSON.parse(body)["Country"]);
+			console.log("Language: " + JSON.parse(body)["Language"]);
+			console.log("Plot: " + JSON.parse(body)["Plot"]);
+			console.log("Actors: " + JSON.parse(body)["Actors"]);
+			console.log("Rotton Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]);
+			console.log("Rotton Tomatoes Rating: " + JSON.parse(body)["tomatoURL"]);
+		}
+	});
+}
+
+if(process.argv[2]=="my-tweets"){
+	liriTwitter();
+}
+else if(process.argv[2]=="spotify-this-song"){
+	liriSpotify();
+}
+else if (process.argv[2]=="movie-this"){
+	liriOmdb();
+}
+else if(process.argv[2]=="do-what-it-says"){
+	require('fs').readFile("random.txt", "utf8", function(error, data) {
+		var dataArr = data.split(',');
+		// if(dataArr[0]=="my-tweets")
+			// liriTwitter();
+	});
+}
