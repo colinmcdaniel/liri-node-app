@@ -124,3 +124,5 @@ else if(process.argv[2]=="do-what-it-says"){
 		}
 	});
 }
+else
+	console.log("Not a valid command.");
