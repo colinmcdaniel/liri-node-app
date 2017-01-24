@@ -27,3 +27,5 @@ Liri takes in commands and outputs the information is like iPhone's SIRI. Howeve
 * Spotify API
 * OMDB API
 * Request, Spotify, Twitter, and fs npm packages
+
+![liri](https://cloud.githubusercontent.com/assets/18273101/22234380/9fbc8386-e1ac-11e6-92e6-6b68bfbc7a01.gif)
