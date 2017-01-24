@@ -1,10 +1,15 @@
 # liri-node-app
 
+* [GitHub Repository](https://github.com/colinmcdaniel/liri-node-app)
+
 ## Functionality
+
+Liri takes in commands and outputs the information is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a Language Interpretation and Recognition Interface. LIRI will be a command line node app that takes in parameters and gives you back data.
 
 ## Set Up
 
-1. (Optional) Modify keys.js to reflect your own Twitter API information (https://apps.twitter.com/app/new to create a new account).
+1. Clone or download the repository.
+2. Modify the keys.js file to reflect your own Twitter API information (https://apps.twitter.com/app/new to create a new account).
 
 ## Usage
 
